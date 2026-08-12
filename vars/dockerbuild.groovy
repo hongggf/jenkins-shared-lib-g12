@@ -10,12 +10,13 @@ def call(String appType, String imageName) {
                 'docker/reactjs.Dockerfile'
             )
         )
-
-        sh """
-            docker build \
-                -t ${imageName} \
-                -f reactjs.Dockerfile .
-        """
+        dir('reactjs-frontend'){
+                sh """
+                    docker build \
+                        -t ${imageName} \
+                        -f reactjs.Dockerfile .
+                """
+        }
 
     } else if (appType == 'spring') {
 
@@ -25,12 +26,14 @@ def call(String appType, String imageName) {
                 'docker/spring.Dockerfile'
             )
         )
-
-        sh """
-            docker build \
-                -t ${imageName} \
-                -f spring.Dockerfile .
-        """
+        dir('spring-backend'){
+            sh """
+                docker build \
+                    -t ${imageName} \
+                    -f spring.Dockerfile .
+            """
+        }
+      
 
     } else {
 
