@@ -1,42 +1,64 @@
 def call(String appType, String imageName) {
 
-    echo "Application type: ${appType}"
-
     if (appType == 'reactjs') {
 
+        echo "======================================"
+        echo "Building ReactJS application"
+        echo "======================================"
+
+        // Get Dockerfile from Shared Library
         writeFile(
             file: 'reactjs.Dockerfile',
-            text: libraryResource(
-                'docker/reactjs.Dockerfile'
-            )
+            text: libraryResource('docker/reactjs.Dockerfile')
         )
-        dir('reactjs-frontend'){
-                sh """
-                    docker build \
-                        -t ${imageName} \
-                        -f reactjs.Dockerfile .
-                """
-        }
+
+        // Show files so we can verify
+        sh '''
+            echo "Dockerfile created:"
+            ls -l reactjs.Dockerfile
+
+            echo "React application:"
+            ls -la reactjs-frontend/
+        '''
+
+        // Build using reactjs-frontend as Docker context
+        sh """
+            docker build \
+                -t ${imageName} \
+                -f reactjs.Dockerfile \
+                reactjs-frontend
+        """
 
     } else if (appType == 'spring') {
 
+        echo "======================================"
+        echo "Building Spring application"
+        echo "======================================"
+
+        // Get Dockerfile from Shared Library
         writeFile(
             file: 'spring.Dockerfile',
-            text: libraryResource(
-                'docker/spring.Dockerfile'
-            )
+            text: libraryResource('docker/spring.Dockerfile')
         )
-        dir('spring-backend'){
-            sh """
-                docker build \
-                    -t ${imageName} \
-                    -f spring.Dockerfile .
-            """
-        }
-      
+
+        sh '''
+            echo "Dockerfile created:"
+            ls -l spring.Dockerfile
+
+            echo "Spring application:"
+            ls -la spring-api/
+        '''
+
+        // Build using spring-api as Docker context
+        sh """
+            docker build \
+                -t ${imageName} \
+                -f spring.Dockerfile \
+                spring-api
+        """
 
     } else {
 
-        error("Unsupported application type: ${appType}")
+        error("Unknown application type: ${appType}")
     }
 }
