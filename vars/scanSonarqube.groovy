@@ -1,9 +1,9 @@
 // for scaning code with sonarqube 
 // For Scaning Reactjs, Nextjs project with sonarqube 
-def call(String projectName,String projectVersion, String projectKey){
+def call(String projectName,String projectVersion, String projectKey,String appDirectory){
 withSonarQubeEnv(credentialsId: 'SONARQUBE-TOKEN', installationName: 'sonar-scanner') {
-    script{
-    
+    dir(appDirectory){
+        
         sh """
 
         ${scannerHome}/bin/sonar-scanner \
