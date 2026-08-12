@@ -1,5 +1,5 @@
 def call (String containerName, String imageName, int hostPort, int containerPort){
-   { sh """
+   sh """
 
         docker rm -f ${containerName} 2>/dev/null || true
         docker pull ${imageName}
@@ -11,5 +11,5 @@ def call (String containerName, String imageName, int hostPort, int containerPor
         """
         echo " container deployed successfully with name: ${containerName} and image: ${imageName} on port: ${hostPort}"    
 
-   }
+   
 }
