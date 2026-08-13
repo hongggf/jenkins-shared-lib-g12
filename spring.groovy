@@ -25,7 +25,7 @@ pipeline{
             }
             steps{
                 script{
-                    scanSonarqube("SPRING","1.0.0","spring","spring-boot-app")
+                    scanSonarqube("SPRING","1.0.0","spring","spring-api")
                     sendTelegram("Scanning is done , you can check sonarqube now","${TOKEN}","${CHAT_ID}")
                 }
                 
