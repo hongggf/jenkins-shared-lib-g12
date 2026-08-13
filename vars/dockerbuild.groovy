@@ -31,9 +31,7 @@ def call(String appType, String imageName) {
 
     } else if (appType == 'spring') {
 
-        echo "======================================"
         echo "Building Spring application"
-        echo "======================================"
 
         // Get Dockerfile from Shared Library
         writeFile(
