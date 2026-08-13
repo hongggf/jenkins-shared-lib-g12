@@ -1,9 +1,0 @@
-services: 
-  reactjs-srv: 
-    build: 
-      context: . 
-      dockerfile: Dockerfile 
-    ports:
-      - "3000:3000"
-    container_name: reactjs-cont 
-    
