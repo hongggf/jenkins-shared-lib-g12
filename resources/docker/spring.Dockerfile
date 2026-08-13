@@ -1,21 +1,30 @@
-# ---------- Build Stage ----------
-FROM gradle:jdk25 AS builder
-WORKDIR /app
-# Copy Gradle files first for better layer caching
-COPY build.gradle settings.gradle ./
-COPY gradle gradle
-COPY gradlew ./
-# Download dependencies (cached unless build files change)
-RUN ./gradlew dependencies --no-daemon
-# Copy source code
-COPY src src
+FROM gradle:8-jdk17 AS builder
 
-# Build application (skip tests)
-RUN ./gradlew  build -x test --no-daemon
-# ---------- Runtime Stage ----------
-FROM eclipse-temurin:25-jre
 WORKDIR /app
-RUN mkdir -p /app/images # for storing image
+
+# Copy Gradle files
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradlew .
+COPY gradle ./gradle
+
+# Make Gradle wrapper executable
+RUN chmod +x gradlew
+
+# Copy source code
+COPY src ./src
+
+# Build application
+RUN ./gradlew build -x test --no-daemon
+
+
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+# Copy JAR from builder
 COPY --from=builder /app/build/libs/*.jar app.jar
+
 EXPOSE 8080
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
