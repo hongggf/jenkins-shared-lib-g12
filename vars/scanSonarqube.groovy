@@ -9,7 +9,8 @@ withSonarQubeEnv(credentialsId: 'SONARQUBE-TOKEN', installationName: 'sonar-scan
         ${scannerHome}/bin/sonar-scanner \
             -Dsonar.projectName="${projectName}" \
             -Dsonar.projectKey=${projectKey} \
-            -Dsonar.projectVersion=${projectVersion}
+            -Dsonar.projectVersion=${projectVersion} \
+            -Dsonar.sources=src
 
         """
     }     
