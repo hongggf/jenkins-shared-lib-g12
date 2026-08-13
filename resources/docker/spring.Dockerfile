@@ -6,7 +6,7 @@ COPY build.gradle settings.gradle ./
 COPY gradle gradle
 COPY gradlew ./
 # Download dependencies (cached unless build files change)
-RUN ./gradlew dependencies --no-daemon || true
+RUN ./gradlew dependencies --no-daemon
 # Copy source code
 COPY src src
 
